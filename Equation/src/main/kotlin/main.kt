@@ -70,7 +70,7 @@ fun main(args : Array<String>)
     var equation = readLine()
     var st = equation
     var sb = String()
-    val str = sb.toString()
+    //val str = sb.toString()
     var i = 0
     var t = 0
 
