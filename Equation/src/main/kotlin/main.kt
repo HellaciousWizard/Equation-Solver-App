@@ -81,7 +81,7 @@ fun StrtoList(s:String): MutableList<String>
     {
         while(i<s.length)
         {
-            if(s[i].isDigit())
+            if(s[i].isDigit() || s[i]==='-' || s[i]==='.')
                 st += s[i]
             else
             {
@@ -92,7 +92,7 @@ fun StrtoList(s:String): MutableList<String>
                 }
                 L.add(s[i].toString())
             }
-            if(st !== "" && i===s.length-1)
+            if(st !== "" && i===s.length-1 || s[i+1]==='-')
             {
                 L.add(st)
                 st = ""
