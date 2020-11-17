@@ -92,7 +92,7 @@ fun StrtoList(s:String): MutableList<String>
                 }
                 L.add(s[i].toString())
             }
-            if(st !== "" && i===s.length-1 || s[i+1]==='-')
+            if(st !== "" && (i===s.length-1 || s[i+1]==='-'))
             {
                 L.add(st)
                 st = ""
@@ -102,27 +102,49 @@ fun StrtoList(s:String): MutableList<String>
     }
     return L
 }
+
+fun Type(s: String): String
+{
+    var i = 0
+    var p = 0
+    while (i < s.length)
+    {
+        if(s[i] === '^' && Character.getNumericValue(s[i+1])>p)
+            p = Character.getNumericValue(s[i+1])
+        i++
+    }
+    if (p === 2)
+        return "Quadratic"
+    else if(p > 2)
+        return "Polynomial"
+    else
+        return "Linear"
+}
 fun main(args : Array<String>)
 {
-    var t = 0
-
+    var eq = mutableListOf<String>()
     print("\nEnter the equation: ")
 
-    var equation = readLine().toString()
-
-    var eq = StrtoList(equation)
-
-    print("\n$eq")
-
-    QuadraticEqn(eq)
-
-    for(i in equation.indices)
+    var eqns = mutableListOf<String>()
+    var t = readLine().toString()
+    while(t.length !== 0)
     {
-        if(equation[i]=='^')
-            t++
+        eqns.add(t)
+        t = readLine().toString()
     }
-    if(t>0)
-        print("\nQuadratic equation")
-    else
-        print("\nLinear Equation")
+
+    for(i in eqns)
+    {
+        eq = StrtoList(i)
+        println("\n$eq")
+        print(Type(i))
+        if(Type(i) === "Quadratic")
+        QuadraticEqn(eq)
+    }
+
+
+
+    //if(Type(eqns) === "Quadratic")
+    //QuadraticEqn(eq)
+
 }
