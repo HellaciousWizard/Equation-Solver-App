@@ -70,7 +70,7 @@ fun QuadraticEqn(l:List<String>)
     }
 }
 
-fun StrtoList(s:String): MutableList<String>
+fun StrtoList(s:String): MutableList<String> //I did a change here
 {
     var st = ""
     var i = 0
