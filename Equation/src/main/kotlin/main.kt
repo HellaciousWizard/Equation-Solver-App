@@ -4,6 +4,8 @@ fun QuadraticEqn(l:List<String>)
 {
     var L = mutableListOf<String>()
     var i=0
+    if(l[0] == "x")
+        L.add("1")
     while (i<=l.size-1)
     {
         if (i<=l.size-3 && l[i+1] == "^")
@@ -30,7 +32,7 @@ fun QuadraticEqn(l:List<String>)
             L.add(l[i])
         i++
     }
-    println(L)
+    println("\n$L")
     i=0
     var a=0.0
     var b=0.0
@@ -44,7 +46,7 @@ fun QuadraticEqn(l:List<String>)
             else if(L[i+1]=="x")
                 b=L[i].toDouble()
             else if(L[i]=="=")
-                c=-(L[i+1].toDouble())
+                c=(L[i-1].toDouble())
         }
         i++
     }
@@ -52,6 +54,10 @@ fun QuadraticEqn(l:List<String>)
     var x1 = 0.0
     var x2 = 0.0
     d = b * b - 4 * a * c
+    println("a:$a")
+    println("b:$b")
+    println("c:$c")
+    println("d:$d")
     when {
         d<0 -> println("\nComplex solution")
         d == 0.0 -> println("\nValue of x:"+(-b/(2*a)))
@@ -63,54 +69,52 @@ fun QuadraticEqn(l:List<String>)
         }
     }
 }
-fun main(args : Array<String>)
+
+fun StrtoList(s:String): MutableList<String>
 {
-    print("\nEnter the equation: ")
-
-    var equation = readLine()
-    var st = equation
-    var sb = String()
-    //val str = sb.toString()
+    var st = ""
     var i = 0
-    var t = 0
+    var L = mutableListOf<String>()
+    print("\nGiven Equation is: $s")
 
-    print("\nGiven Equation is: $st")
-
-    if (equation != null)
+    if (s !== null)
     {
-        for(ii in equation!!.indices)
+        while(i<s.length)
         {
-            if(equation[i].isLetter() || equation[i]==('+') || equation[i]==('-') || equation[i]==('*') || equation[i]==('/') || equation[i]==('^') || equation[i]==('(') || equation[i]==(')') || equation[i]==('{') || equation[i]==('}') || equation[i]==('[') || equation[i]==(']') || equation[i]==('>') || equation[i]==('<')|| equation[i]==('='))
+            if(s[i].isDigit())
+                st += s[i]
+            else
             {
-                if(i>3)
+                if(st !== "")
                 {
-                    if(equation.substring(i-3,i)=="sep")
-                    {
-                        equation = equation.substring(0, i) + equation[i] + "sep" + equation.substring(i + 1, equation.length)
-                        i += 3
-                    }
-                    else
-                    {
-                        equation=equation.substring(0,i)+"sep${equation[i]}sep"+equation.substring(i+1,equation.length)
-                        i+=6
-                    }
-
+                    L.add(st)
+                    st = ""
                 }
-                else
-                {
-                    equation=equation.substring(0,i)+"sep${equation[i]}sep"+equation.substring(i+1,equation.length)
-                    i+=6
-                }
+                L.add(s[i].toString())
             }
-
+            if(st !== "" && i===s.length-1)
+            {
+                L.add(st)
+                st = ""
+            }
             i++
         }
     }
+    return L
+}
+fun main(args : Array<String>)
+{
+    var t = 0
 
-    var eq1 = equation!!.split("sep")
-    print("\n$eq1")
+    print("\nEnter the equation: ")
 
-    QuadraticEqn(eq1)
+    var equation = readLine().toString()
+
+    var eq = StrtoList(equation)
+
+    print("\n$eq")
+
+    QuadraticEqn(eq)
 
     for(i in equation.indices)
     {
