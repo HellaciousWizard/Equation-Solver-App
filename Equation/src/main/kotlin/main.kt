@@ -1,4 +1,5 @@
 import java.lang.Math.sqrt
+import kotlin.math.pow
 
 fun QuadraticEqn(l:List<String>)
 {
@@ -53,19 +54,36 @@ fun QuadraticEqn(l:List<String>)
     var d = 0.0
     var x1 = 0.0
     var x2 = 0.0
+    var u = 0.0
     d = b * b - 4 * a * c
     println("a:$a")
     println("b:$b")
     println("c:$c")
     println("d:$d")
     when {
-        d<0 -> println("\nComplex solution")
+        d<0 ->
+        {
+            if(b!==0.0)
+            {
+                u = (kotlin.math.abs(b) / 2).pow(2) - kotlin.math.abs(c)
+                u = kotlin.math.sqrt(kotlin.math.abs(u))
+                b = -b / 2
+                println("Value of 1st root:$b + $u i")
+                print("Value of 2nd root:$b - $u i")
+            }
+            else
+            {
+                u=kotlin.math.sqrt(c/a)
+                println("Value of 1st root:$b + $u i")
+                print("Value of 2nd root:$b - $u i")
+            }
+        }
         d == 0.0 -> println("\nValue of x:"+(-b/(2*a)))
         else -> {
             x1 = (-b + kotlin.math.sqrt(d)) / (2 * a)
             x2 = (-b - kotlin.math.sqrt(d)) / (2 * a)
-            println("Value of x1:$x1")
-            print("Value of x2:$x2")
+            println("Value of 1st root:$x1")
+            print("Value of 2nd root:$x2")
         }
     }
 }
@@ -120,9 +138,46 @@ fun Type(s: String): String
     else
         return "Linear"
 }
+
+/*
+fun LinearEqn(l:List<String>)
+{
+    var j = 0
+    var c = 0
+    var neqn = 0
+    for (i in l)
+    {
+        while (j < i.length)
+        {
+            if(i[j].isLetter() && !(i[j+1].isLetter()))
+                c++
+            j++
+        }
+        neqn++
+    }
+    if (neqn === c)
+    {
+        var L = mutableListOf<Int>()
+        var j = 0
+        for(i in l)
+        {
+            while(j<i.length)
+            {
+                if(i[j+1].isLetter() && !(i[j+2].isLetter()))
+                    L.add(Character.getNumericValue(i[j]))
+                //else if(i[j] === '=')
+                    //L.add(Character.getNumericValue(i[j+1]))
+                j++
+            }
+        }
+
+    }
+}
+*/
+
 fun main(args : Array<String>)
 {
-    var eq = mutableListOf<String>()
+    var eq: MutableList<String>
     print("\nEnter the equation: ")
 
     var eqns = mutableListOf<String>()
@@ -139,12 +194,7 @@ fun main(args : Array<String>)
         println("\n$eq")
         print(Type(i))
         if(Type(i) === "Quadratic")
-        QuadraticEqn(eq)
+            QuadraticEqn(eq)
     }
-
-
-
-    //if(Type(eqns) === "Quadratic")
-    //QuadraticEqn(eq)
 
 }
