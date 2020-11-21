@@ -33,7 +33,7 @@ fun QuadraticEqn(l:List<String>)
             L.add(l[i])
         i++
     }
-    println("\n$L")
+    //println("\n$L")
     i=0
     var a=0.0
     var b=0.0
@@ -56,10 +56,10 @@ fun QuadraticEqn(l:List<String>)
     var x2 = 0.0
     var u = 0.0
     d = b * b - 4 * a * c
-    println("a:$a")
+    /*println("a:$a")
     println("b:$b")
     println("c:$c")
-    println("d:$d")
+    println("d:$d")*/
     when {
         d<0 ->
         {
@@ -99,21 +99,21 @@ fun StrtoList(s:String): MutableList<String>
     {
         while(i<s.length)
         {
-            if(s[i].isDigit() || s[i]==='-' || s[i]==='.')
-                st += s[i]
-            else
+            if(s[i] !== ' ')
             {
-                if(st !== "")
-                {
+                if (s[i].isDigit() || s[i] === '-' || s[i] === '.')
+                    st += s[i]
+                else {
+                    if (st !== "") {
+                        L.add(st)
+                        st = ""
+                    }
+                    L.add(s[i].toString())
+                }
+                if (st !== "" && (i === s.length - 1 || s[i + 1] === '-')) {
                     L.add(st)
                     st = ""
                 }
-                L.add(s[i].toString())
-            }
-            if(st !== "" && (i===s.length-1 || s[i+1]==='-'))
-            {
-                L.add(st)
-                st = ""
             }
             i++
         }
@@ -192,7 +192,6 @@ fun main(args : Array<String>)
     {
         eq = StrtoList(i)
         println("\n$eq")
-        print(Type(i))
         if(Type(i) === "Quadratic")
             QuadraticEqn(eq)
     }
