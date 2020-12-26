@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GraphView</string>
+    <string name="button">View Graph</string>
+</resources>
