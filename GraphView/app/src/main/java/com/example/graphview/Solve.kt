@@ -107,7 +107,6 @@ class Solve: AppCompatActivity() {
             i++
         }
 
-//    println(L)
 
         /* Setting value of a,b and c*/
         i = 0
@@ -145,7 +144,6 @@ class Solve: AppCompatActivity() {
         coeff.add(a)
         coeff.add(b)
         coeff.add(c)
-        //print(coeff)
 
         when {
             d < 0 -> {
@@ -164,8 +162,8 @@ class Solve: AppCompatActivity() {
             }
             d == 0.0 -> return "X: ${Math.round((-b / (2 * a)) * 1000.0) / 1000.0}"
             else -> {
-                x1 = (-b + kotlin.math.sqrt(d)) / (2 * a)
-                x2 = (-b - kotlin.math.sqrt(d)) / (2 * a)
+                x1 = (-b + sqrt(d)) / (2 * a)
+                x2 = (-b - sqrt(d)) / (2 * a)
                 return "First Root = ${Math.round(x1 * 1000.0) / 1000.0} \nSecond Root = ${Math.round(x2 * 1000.0) / 1000.0}"
             }
         }
@@ -269,19 +267,8 @@ class Solve: AppCompatActivity() {
         return 0
     }
 
-    fun mat_mul(inv: Array<Array<Double?>>, A: Array<Array<Double?>>,B: Array<Double?>,N: Int): MutableList<Double?>{
-        /*
-        l=[]
-        det = determinant(A,N)
-        for i in inv:
-            s=0
-            c=0
-            for j in i:
-                s=s+j*B[c]
-                c=c+1
-            l.append(s/det)
-        return(l)
-         */
+    fun mat_mul(inv: Array<Array<Double?>>, A: Array<Array<Double?>>,B: Array<Double?>,N: Int): MutableList<Double?>
+    {
         var l = mutableListOf<Double?>()
         var det = determinant(A, N)
         var s: Double
@@ -347,8 +334,9 @@ class Solve: AppCompatActivity() {
             }
         }
 
-        coeff.clear()
-        coeff = L
+//        coeff.clear()
+        if(coeff.size == 0)
+            coeff = L
 
         if (neqn == c)
         {
@@ -406,31 +394,36 @@ class Solve: AppCompatActivity() {
         var L = mutableListOf<Double?>()
         var mp = LinearEqn(l)
         var d : Double
-        if(mp.size != 0)
-            d = mp[0]!!
+        Log.d("Point Linear",mp.toString())
+        d = if(mp.size != 0)
+            mp[0]!!
         else
-            d = -coeff[2] / coeff[0]
+            -coeff[2] / coeff[0]
 
-        d += ((5.0.pow(DigitCount(d).toDouble())) / d)
-        if(coeff[1]!=0.0) {
-            if (-(d) <= d) {
-                L.add(-(d))
-                L.add(d)
-            } else {
-                L.add(d)
-                L.add(-(d))
-            }
-        }
+        d += if(d != 0.0)
+            ((5.0.pow(DigitCount(d).toDouble())) / d)
         else
-        {
+            5.0
+//        if(coeff[1]!=0.0) {
             if (-(d) <= d) {
-                L.add(-(d/2))
-                L.add(d*2)
+                L.add(-(d))
+                L.add(d)
             } else {
-                L.add(d*2)
-                L.add(-(d/2))
+                L.add(d)
+                L.add(-(d))
             }
-        }
+//        }
+//        else
+//        {
+//            if (-(d) <= d) {
+//                L.add(-(d/2))
+//                L.add(d*2)
+//            } else {
+//                L.add(d*2)
+//                L.add(-(d/2))
+//            }
+//        }
+        Log.d("Point",L.toString())
         return L
     }
 
@@ -446,6 +439,7 @@ class Solve: AppCompatActivity() {
         var p = mutableListOf<Double?>()
         for(L in l)
         {
+            Log.d("L",L)
             t = Type(L)
             if (t == "Quadratic")
             {
@@ -479,25 +473,41 @@ class Solve: AppCompatActivity() {
                 var y = mutableListOf<String>()
                 var u = 0
                 var i = 0
+                var ch = 0.toChar()
 
                 while (i < L.length)
                 {
                     if(L[i].isLetter())
+                    {
+                        ch = L[i]
                         u++
+                    }
                     i++
                 }
-
+                Log.d("u",u.toString())
                 if(u == 1)
                 {
                     p = Point(l)
                     var const = LinearEqn(mutableListOf(L))[0]
-                    var i = p[0]!!
-
-                    while (i <= p[1]!!)
+                    if(ch == 'x')
                     {
-                        x.add((round(const!! * 1000.0) / 1000.0).toString())
-                        y.add((round((coeff[0] * i + coeff[1]) * 1000.0) / 1000.0).toString())
-                        i += 0.5
+                        var i = p[0]!!
+                        while (i <= p[1]!!)
+                        {
+                            x.add((round(const!! * 1000.0) / 1000.0).toString())
+                            y.add((round((i) * 1000.0) / 1000.0).toString())//coeff[0] * i - coeff[1]
+                            i += 0.5
+                        }
+                    }
+                    else if(ch == 'y')
+                    {
+                        var i = p[0]!!
+                        while (i <= p[1]!!)
+                        {
+                            x.add((round( (i)* 1000.0) / 1000.0).toString())//coeff[0] * i - coeff[1]
+                            y.add((round( const!! * 1000.0) / 1000.0).toString())
+                            i += 0.5
+                        }
                     }
                     c++
                     X.add(x.joinToString(","))
@@ -510,32 +520,52 @@ class Solve: AppCompatActivity() {
                         p=Point(l)
                         LinearEqn(l)
                     }
-                    if(coeff[1] != 0.0)
+                    //else if(c==l.size)
+                        //break
+                    Log.d("Linear",LinearEqn(l).toString())
+                    Log.d("Coeff",coeff.toString())
+                    if(coeff[1] != 0.0)//y!=0
                     {
-                        var i = p[0]!!
-                        while (i <= p[1]!!) {
-                            x.add((round(i * 1000.0) / 1000.0).toString())
-                            y.add((((round((coeff[0] * i + coeff[2]) * 1000.0) / 1000.0) * -(coeff[1])).toString()))
-
-                            i += 0.5
+                        Log.d("LOG","If Part working")
+                        if(coeff[0] != 0.0)//x!=0
+                        {
+                            var i = p[0]!!
+                            while (i <= p[1]!!) {
+                                x.add((round(i * 1000.0) / 1000.0).toString())
+                                y.add((((round((-coeff[2] - i * coeff[0]) / coeff[1] * 1000.0) / 1000.0)).toString()))
+                                i += 0.5
+                            }
+                        }
+                        else//x==0
+                        {
+                            var const = (LinearEqn(l)[1])!!
+                            var i = p[0]!!
+                            while (i <= p[1]!!) {
+                                x.add((round(i * 1000.0) / 1000.0).toString())
+                                y.add(const.toString())
+                                i += 0.5
+                            }
                         }
                     }
-                    else{
+                    else//y==0 && x!=0
+                    {
+                        Log.d("LOG","Else Part working")
                         var const = LinearEqn(l)[0]
                         var i = p[0]!!
-                        while (i <= p[1]!!) {
+                        while (i <= p[1]!!)
+                        {
                             x.add((round(const!! * 1000.0) / 1000.0).toString())
-                            y.add((((round((coeff[0] * i + coeff[2]) * 1000.0) / 1000.0)).toString()))
+                            y.add((((round((-coeff[2] - coeff[0] * i ) * 1000.0) / 1000.0)).toString()))
                             i += 0.5
                         }
                     }
-                    c++
-                    if (c != l.size)
-                    {
-                        coeff.remove(coeff[0])
-                        coeff.remove(coeff[0])
-                        coeff.remove(coeff[0])
-                    }
+                    Log.d("X:",x.toString())
+                    Log.d("Y:",y.toString())
+                    c+=2
+                    coeff.remove(coeff[0])
+                    coeff.remove(coeff[0])
+                    coeff.remove(coeff[0])
+
                     X.add(x.joinToString(","))
                     Y.add(y.joinToString(","))
                 }
@@ -565,16 +595,18 @@ class Solve: AppCompatActivity() {
         //Log.d("Error find", "before python")
         //PYTHON STARTED FROM HERE
         if (!Python.isStarted()) Python.start(AndroidPlatform(this))
-        //Log.d("Error find", "python started")
+//        Log.d("Error find", "python started")
         //tvw2.text="python started"
-        val py = Python.getInstance()
+        var py = Python.getInstance()
         //Log.d("Error find", "instance created")
         //tvw2.text="instance created"
         //Python object to load script
-        val pyo = py.getModule("GraphView")
-        var obj = PyObject()
+        var pyo = py.getModule("GraphView")
         //Log.d("S1 size",2)
-        if (s!="[1.0x+-0.0=0]" || s!="[-1.0x+-0.0=0]" || s!= "[-1.0y+-0.0=0]" || s!="[1.0y+-0.0=0]") {
+        var obj = py.getModule("GraphView")
+        Log.d("s",s)
+        var t = s!="1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && s!="-1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && s!="1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0" && s!="-1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0"
+        if (s!="1.0x+-0.0=0" && s!="-1.0x+-0.0=0" && s!= "-1.0y+-0.0=0" && s!="1.0y+-0.0=0" && t) {
             var count = 1
             for (i in s1) {
                 if (i == '|')
@@ -584,14 +616,13 @@ class Solve: AppCompatActivity() {
         }
         else
         {
-            if(s!="[1.0x+-0.0=0]" || s!="[-1.0x+-0.0=0]" )
+            if(s=="1.0x+-0.0=0" || s=="-1.0x+-0.0=0" )
                 obj = pyo.callAttr("Graph_Img", "1x=0", "", "", 0)
-            else if(s!= "[-1.0y+-0.0=0]" || s!="[1.0y+-0.0=0]")
+            else if(s== "-1.0y+-0.0=0" || s=="1.0y+-0.0=0")
                 obj = pyo.callAttr("Graph_Img", "1y=0", "", "", 0)
+            else if(s=="1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" || s=="-1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" || s=="1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0" || s=="-1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0")
+                obj = pyo.callAttr("Graph_Img", "1x=0,1y=0", "", "", 0)
         }
-
-        //mutableListOf<String>(s1)
-        //mutableListOf<String>(s2)
         val str = obj.toString()
         val data = Base64.decode(str, Base64.DEFAULT)
         val bmp = BitmapFactory.decodeByteArray(data, 0, data.size)
@@ -622,17 +653,17 @@ class Solve: AppCompatActivity() {
 
         eqlist = intent.getStringExtra("eqlist")!!.split(",").toMutableList()
 
-        Log.d("Eq", (eqlist[0] != "1.0x+-0.0=0").toString())
-        //if (tvw2.text == "Fake Equation")
-        //  tvw.text = tvw2.text
-        if ((eqlist[0] != "1.0x+-0.0=0" || eqlist[0] != "-1.0x+-0.0=0" || eqlist[0] != "-1.0y+-0.0=0")) {
-            Log.d("true","true")
-            if (Type(eqlist[0]) == "Linear") {
+        var t = eqlist.joinToString(",")!="1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && eqlist.joinToString(",")!="-1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && eqlist.joinToString(",")!="1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0" && eqlist.joinToString(",")!="-1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0"
+        Log.d("Eq", eqlist.joinToString(","))
+        if ((eqlist[0] != "1.0x+-0.0=0" && eqlist[0] != "-1.0x+-0.0=0" && eqlist[0] != "-1.0y+-0.0=0" && eqlist[0] != "1.0y+-0.0=0") && t)
+        {
+            if (Type(eqlist[0]) == "Linear")
+            {
                 //eqlist = ms.giveSol(eqlist, "Linear")
 
-                if (eqlist.size < 3) {
+                if (eqlist.size < 3)
+                {
 
-                    Log.d("Points -> ", eqlist.toString())
                     var lp = Graph(eqlist)
                     s1 = lp[0]//"-5.0,-4.0,-3.0,-2.0,-1.0,0.0,1.0,2.0,3.0,4.0,5.0"
                     s2 = lp[1]//"-25.0,-16.0,-9.0,-4.0,-1.0,0.0,1.0,4.0,9.0,16.0,25.0"
@@ -642,6 +673,7 @@ class Solve: AppCompatActivity() {
                     returnimage(eqlist.joinToString(","))
                 }
                 eqn = LinearEqn(eqlist)//eqn.split(",").toString()
+                Log.d("Linear",eqn.toString())
                 li = ""
                 for (i in eqn.indices) {
                     li += "${charseT[i]} = ${eqn[i]}\n"
@@ -666,8 +698,12 @@ class Solve: AppCompatActivity() {
         }
         else
         {
-            Log.d("false","false")
-            tvw.text = eqlist[0]
+            if(eqlist.joinToString(",")=="1.0x+-0.0=0" || eqlist.joinToString(",")=="-1.0x+-0.0=0" )
+                tvw.text = "x=0"
+            else if(eqlist.joinToString(",")== "-1.0y+-0.0=0" || eqlist.joinToString(",")=="1.0y+-0.0=0")
+                tvw.text = "y=0"
+            else if(eqlist.joinToString(",")=="1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" || eqlist.joinToString(",")=="-1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" || eqlist.joinToString(",")=="1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0" || eqlist.joinToString(",")=="-1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0")
+                tvw.text = "x=0,y=0"
             iview.setBackgroundResource(R.drawable.ic_launcher_background)
             returnimage(eqlist.joinToString(","))
         }
