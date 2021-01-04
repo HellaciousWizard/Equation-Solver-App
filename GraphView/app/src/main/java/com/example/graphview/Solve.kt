@@ -405,13 +405,13 @@ class Solve: AppCompatActivity() {
         else
             5.0
 //        if(coeff[1]!=0.0) {
-            if (-(d) <= d) {
-                L.add(-(d))
-                L.add(d)
-            } else {
-                L.add(d)
-                L.add(-(d))
-            }
+        if (-(d) <= d) {
+            L.add(-(d))
+            L.add(d)
+        } else {
+            L.add(d)
+            L.add(-(d))
+        }
 //        }
 //        else
 //        {
@@ -487,7 +487,7 @@ class Solve: AppCompatActivity() {
                 Log.d("u",u.toString())
                 if(u == 1)
                 {
-                    p = Point(l)
+                    p = Point(mutableListOf(L))
                     var const = LinearEqn(mutableListOf(L))[0]
                     if(ch == 'x')
                     {
@@ -521,7 +521,7 @@ class Solve: AppCompatActivity() {
                         LinearEqn(l)
                     }
                     //else if(c==l.size)
-                        //break
+                    //break
                     Log.d("Linear",LinearEqn(l).toString())
                     Log.d("Coeff",coeff.toString())
                     if(coeff[1] != 0.0)//y!=0
@@ -644,14 +644,14 @@ class Solve: AppCompatActivity() {
 
         var eqn: MutableList<Double?>
         var li: String
-        var eqlist = mutableListOf<String>()
         var charseT = intent.getStringExtra("chrset")!!.split(",").toMutableList()
 
         //eqn = etxt2.text.toString()
         //ms = mainsolver()
         //eqlist = eqn.split(",").toMutableList()
 
-        eqlist = intent.getStringExtra("eqlist")!!.split(",").toMutableList()
+        var eqlist = intent.getStringExtra("eqlist")!!.split(",").toMutableList()
+        var graph = intent.getStringExtra("graph")!!.split(",").toMutableList()
 
         var t = eqlist.joinToString(",")!="1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && eqlist.joinToString(",")!="-1.0x+0.0y+-0.0=0,0.0x+1.0y+-0.0=0" && eqlist.joinToString(",")!="1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0" && eqlist.joinToString(",")!="-1.0x+0.0y+-0.0=0,0.0x+-1.0y+-0.0=0"
         Log.d("Eq", eqlist.joinToString(","))
@@ -663,32 +663,34 @@ class Solve: AppCompatActivity() {
 
                 if (eqlist.size < 3)
                 {
-
-                    var lp = Graph(eqlist)
-                    s1 = lp[0]//"-5.0,-4.0,-3.0,-2.0,-1.0,0.0,1.0,2.0,3.0,4.0,5.0"
-                    s2 = lp[1]//"-25.0,-16.0,-9.0,-4.0,-1.0,0.0,1.0,4.0,9.0,16.0,25.0"
-                    Log.d("s1", s1.toString())
-                    Log.d("s2", s2.toString())
+                    var lp = Graph(graph)
+                    s1 = lp[0]
+                    s2 = lp[1]
+                    Log.d("s1", s1)
+                    Log.d("s2", s2)
                     iview.setBackgroundResource(R.drawable.ic_launcher_background)
                     returnimage(eqlist.joinToString(","))
                 }
+
                 eqn = LinearEqn(eqlist)//eqn.split(",").toString()
                 Log.d("Linear",eqn.toString())
                 li = ""
-                for (i in eqn.indices) {
+
+                for (i in eqn.indices)
                     li += "${charseT[i]} = ${eqn[i]}\n"
-                }
+
                 tvw.text = li
                 //tvw2.text = "${eqlist[0]} \nPoints -> $lp"
-            } else if (Type(eqlist[0]) == "Quadratic") {
-                //eqlist = ms.giveSol(eqlist,"Quadratic")
+            }
+            else if (Type(eqlist[0]) == "Quadratic")
+            {
                 Log.d("Points -> ", eqlist.toString())
 
                 var lp = Graph(eqlist)
-                s1 = lp[0]//"-5.0,-4.0,-3.0,-2.0,-1.0,0.0,1.0,2.0,3.0,4.0,5.0"
-                s2 = lp[1]//"-25.0,-16.0,-9.0,-4.0,-1.0,0.0,1.0,4.0,9.0,16.0,25.0"
-                Log.d("s1", s1.toString())
-                Log.d("s2", s2.toString())
+                s1 = lp[0]
+                s2 = lp[1]
+                Log.d("s1", s1)
+                Log.d("s2", s2)
                 iview.setBackgroundResource(R.drawable.ic_launcher_background)
                 returnimage(eqlist.joinToString(","))
                 //tvw2.text = "${eqlist[0]} \nPoints -> $s2"
