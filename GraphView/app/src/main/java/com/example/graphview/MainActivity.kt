@@ -45,54 +45,32 @@ class MainActivity : AppCompatActivity() {
         anim1.start()
         fab.setOnClickListener{
             eqnstr = eTXT.text.toString().split(",").toMutableList()
-            var graph = mutableListOf<String>()
-            var flag = true
-            for(L in eqnstr)
-            {
-                var u = 0
-                var i = 0
-                while (i < L.length)
-                {
-                    if(L[i].isLetter())
-                        u++
-                    i++
-                }
-                if(u!=1)
-                {
-                    flag = false
-                    break
-                }
-            }
-            graph = ms.giveSol(eqnstr,flag)
-            eqnstr = ms.giveSol(eqnstr,false)
-
-            if (eqnstr.contains("0"))
-            {
+            eqnstr = ms.giveSol(eqnstr,Type(eqnstr[0]))
+            if (eqnstr.contains("0")){
                 Toast.makeText(this,eqnstr[0], Toast.LENGTH_SHORT).show()
             }
-            else
-            {
+            else {
                 intt = Intent(this, Solve::class.java)
                 intt.putExtra("eqn", /*eqnstr.toString()*/eTXT.text.toString())
                 intt.putExtra("eqlist", eqnstr.joinToString(","))
-                intt.putExtra("graph", graph.joinToString(","))
                 ms.cset.remove('~')
                 ms.cset.sort()
                 intt.putExtra("chrset",ms.cset.joinToString(","))
                 startActivity(intt)
             }
         }
+
     }
 
     fun Type(s: String): String {
         var i = 0
         var p = 0
         while (i < s.length) {
-            if (s[i] == '^' && Character.getNumericValue(s[i + 1]) > p)
+            if (s[i] === '^' && Character.getNumericValue(s[i + 1]) > p)
                 p = Character.getNumericValue(s[i + 1])
             i++
         }
-        if (p == 2)
+        if (p === 2)
             return "Quadratic"
         else if (p > 2)
             return "Polynomial"
