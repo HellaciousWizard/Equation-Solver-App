@@ -400,7 +400,7 @@ class Solve: AppCompatActivity() {
         }
         return c
     }
-
+    
     fun Point(l:List<String>): MutableList<Double?>
     {
         var L = mutableListOf<Double?>()
