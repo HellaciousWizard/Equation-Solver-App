@@ -12,4 +12,4 @@ In this project, we are solving different equations of linear and quadratic type
 ## Advantages
 * System of linear equations can be solved instantly
 * Two Dimensional Graphs provide better understanding of the equation and its solution
-* Any quadratic equation can be solved including complex
+* Any single variable Quadratic Equation can be solved including complex roots
