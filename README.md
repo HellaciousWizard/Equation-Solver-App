@@ -5,6 +5,11 @@ In this project, we are solving different equations of linear and quadratic type
 
 ## Objectives
 * To find the solutions of a given mathematical equation
-* To show the graph of a given mathematical equation and its solution
+* To show the 2D graph of the given mathematical equation and its solution
 * To create efficient algorithms for solving an equation
 * To find and display errors in a given equation
+
+## Advantages
+* System of linear equations can be solved instantly
+* Two Dimensional Graphs provide better understanding of the equation and its solution
+* Any quadratic equation can be solved including complex
